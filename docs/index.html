@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <title>Skill-based Model-based RL</title>
+
+    <meta charset="UTF-8">
+    <meta property="og:title" content=SkiMo>
+    <meta property="og:description" content="Skill-based Model-based Reinforcement Learning">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1 minimum-scale=1.0">
+
+    <link rel="icon" type="image/png" href="img/favicon-32x32.png">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100, 100i,300,400,500,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <!-- Showdown -->
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
+    <script src="js/figure-extension.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <!-- WAVE -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- Slick -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+    <link rel="stylesheet" href="theme.css">
+
+    <script>
+        const classMap = {
+            ul: 'browser-default'
+        }
+
+        const bindings = Object.keys(classMap)
+        .map(key => ({
+            type: 'output',
+            regex: new RegExp(`<${key}(.*)>`, 'g'),
+            replace: `<${key} class="${classMap[key]}" $1>`
+        }));
+
+        const converter = new showdown.Converter({
+            extensions: [bindings, 'figure']
+        });
+        converter.setOption('parseImgDimensions', true);
+        converter.setOption('tables', true);
+        converter.setFlavor('github');
+
+        $("#markdown-body").ready(() => {
+            $.get( "content.md", (data) => {
+                const content_html = converter.makeHtml(data);
+                $("#markdown-body").html(content_html);
+            });
+        });
+
+    </script>
+
+    <body>
+        <!-- Header -->
+        <!-- Wide screen -->
+        <header class="hd-container w3-container hide-narrow content-center">
+            <div class="w3-cell-row" style="width: 90%; margin: auto; max-width: 1600px; margin-top: 80px; margin-bottom: 40px">
+                <div class="w3-container w3-cell w3-cell-middle">
+                    <div class="title">Skill-based Model-based Reinforcement Learning </div>
+                    <!-- Author -->
+                <div class="w3-row-padding">
+                    <div class="authorship-container">
+                        <ul class="horizontal-list">
+                            <li><a href="https://lucys0.github.io" target="_blank"><i class="far fa-user"></i> Lucy Xiaoyang Shi<sup>1</sup></a></li>
+                            <li><a href="https://clvrai.com/web_lim/" target="_blank"><i class="far fa-user"></i> Joseph J. Lim<sup>2,3</sup> </a></li>
+                            <li><a href="https://youngwoon.github.io" target="_blank"><i class="far fa-user"></i> Youngwoon Lee<sup>1</sup></a></li>
+                        </ul>
+                        <ul class="horizontal-list">
+                            <li><i class="fas fa-university"></i> USC<sup>1</sup></li>
+                            <li><i class="fas fa-university"></i> KAIST<sup>2</sup></li>
+                            <li><i class="fas fa-building"></i> NAVER AI Lab<sup>3</sup></li>
+                        </ul>
+                    </div>
+                    </div>
+                    <div class="excerpt w3-padding-16" style="width: 80%; max-width: 700px; margin: auto;">
+                        Model-based reinforcement learning (RL) is a sample-efficient way of learning complex behaviors by leveraging a learned single-step dynamics model to plan actions in imagination. However, planning every action for long-horizon tasks is not practical, akin to a human planning out every muscle movement. Instead, humans efficiently plan with high-level skills to solve complex tasks. From this intuition, we propose a <b>Ski</b>ll-based <b>Mo</b>del-based RL framework (<b>SkiMo</b>) that enables planning in the skill space using a <i>skill dynamics model</i>, which directly predicts the skill outcomes, rather than predicting all small details in the intermediate states, step by step. <!--For accurate and efficient long-term planning, we <i>jointly</i> learn the skill dynamics model and a skill repertoire from prior experience. We then harness the learned skill dynamics model to accurately simulate and plan over long horizons in the skill space, which enables efficient downstream learning of long-horizon, sparse reward tasks.--> Experimental results in navigation and manipulation domains show that SkiMo extends the temporal horizon of model-based approaches and improves the sample efficiency for both model-based RL and skill-based RL.
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Narrow screen -->
+        <header class="hd-container w3-container hide-wide">
+            <div class="w3-row-padding w3-center w3-padding-24">
+                <span class="title">Skill-based Model-based Reinforcement Learning</span>
+            </div>
+            <div class="w3-row-padding">
+                <!-- Author -->
+                <div class="authorship-container">
+                    <ul class="horizontal-list">
+                        <li><a href="https://lucys0.github.io" target="_blank"><i class="far fa-user"></i> Lucy Xiaoyang Shi<sup>1</sup></a></li>
+                        <li><a href="https://clvrai.com/web_lim/" target="_blank"><i class="far fa-user"></i> Joseph J. Lim<sup>2,3</sup> </a></li>
+                        <li><a href="https://youngwoon.github.io" target="_blank"><i class="far fa-user"></i> Youngwoon Lee<sup>1</sup></a></li>
+                    </ul>
+                    <ul class="horizontal-list">
+                        <li><i class="fas fa-university"></i> USC<sup>1</sup></li>
+                        <li><i class="fas fa-university"></i> KAIST<sup>2</sup></li>
+                        <li><i class="fas fa-building"></i> NAVER AI Lab<sup>3</sup></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="w3-row-padding"><hr></div>
+                <div class="w3-row-padding w3-padding-16">
+                    <div class="excerpt">
+                        Model-based reinforcement learning (RL) is a sample-efficient way of learning complex behaviors by leveraging a learned single-step dynamics model to plan actions in imagination. However, planning every action for long-horizon tasks is not practical, akin to a human planning out every muscle movement. Instead, humans efficiently plan with high-level skills to solve complex tasks. From this intuition, we propose a <b>Ski</b>ll-based <b>Mo</b>del-based RL framework (<b>SkiMo</b>) that enables planning in the skill space using a <i>skill dynamics model</i>, which directly predicts the skill outcomes, rather than predicting all small details in the intermediate states, step by step. <!--For accurate and efficient long-term planning, we <i>jointly</i> learn the skill dynamics model and a skill repertoire from prior experience. We then harness the learned skill dynamics model to accurately simulate and plan over long horizons in the skill space, which enables efficient downstream learning of long-horizon, sparse reward tasks.--> Experimental results in navigation and manipulation domains show that SkiMo extends the temporal horizon of model-based approaches and improves the sample efficiency for both model-based RL and skill-based RL.
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <div class="main-body">
+            <div class="w3-container">
+                <div class="w3-content" style="max-width:1000px;">
+                    <!-- Links -->
+                    <div class="link-container">
+                        <ul class="horizontal-list">
+                            <!-- replace later -->
+                            <li><button class="w3-button waves-effect waves-light w3-card-4 grey lighten-2 w3-round-large"><i class="fas fa-file-alt"></i> <a href="https://arxiv.org/abs/2207.07560" target="_blank"> Paper </a></button></li>
+                            <li><button class="w3-button waves-effect waves-light w3-card-4 grey lighten-2 w3-round-large"><i class="fas fa-code"></i> <a href="https://github.com/clvrai/skimo" target="_blank"> Code </a></button></li>
+                        </ul>
+                    </div>
+                    <!-- Markdown Body -->
+                    <div id="markdown-body"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="w3-center w3-light-grey w3-padding-32 w3-small">
+            <p style="color: grey">
+                This work was supported by IITP grant (KAIST AI Graduate School) and NRF grant, funded by the Korea government. This research was also supported by the Annenberg Fellowship from USC. <br/>
+                We would like to thank Ayush Jain and Grace Zhang for help on writing, Karl Pertsch for assistance in setting up SPiRL and CALVIN, and all members of the USC CLVR lab for constructive feedback. <br/>
+                &copy; Copyright 2022, CLVR, USC.
+            </p>
+        </footer>
+
+    </body>
+</html>
