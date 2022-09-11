@@ -1,0 +1,11 @@
+matplotlib
+pillow
+scikit-image
+funcsigs
+torch
+torchvision
+pandas
+gdown
+mujoco
+gym==0.23.1
+setuptools==57.5.0

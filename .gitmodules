@@ -1,0 +1,10 @@
+[submodule "rolf"]
+	path = rolf
+	url = git@github.com:youngwoon/robot-learning.git
+    branch = skimo
+[submodule "spirl"]
+	path = spirl
+	url = https://github.com/clvrai/spirl.git
+[submodule "calvin"]
+	path = calvin
+	url = https://github.com/mees/calvin.git

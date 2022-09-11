@@ -337,10 +337,10 @@ We visualize trajectories in the replay buffer at 1.5M training steps in blue (l
 
 ## Citation
 ```
-@article{shi2022skimo,
+@inproceedings{shi2022skimo,
   title={Skill-based Model-based Reinforcement Learning},
   author={Lucy Xiaoyang Shi and Joseph J. Lim and Youngwoon Lee},
-  journal={arXiv preprint arXiv:2207.07560},
+  booktitle={Conference on Robot Learning},
   year={2022}
 }
 ```

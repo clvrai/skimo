@@ -1,0 +1,77 @@
+defaults:
+  - common
+  - _self_
+
+name: spirl_tdmpc
+phase: rl
+
+pretrain_ckpt_path: null
+skill_dim: 10
+skill_horizon: 10
+
+# Training
+max_global_step: 2000000
+warm_up_step: 5000
+train_every: 500
+train_iter: 1
+train_steps: 500
+log_every: 500
+evaluate_every: 5000
+ckpt_every: 50000
+
+meta_batch_size: 256
+meta_batch_length: 5
+rl_discount: 0.99
+horizon: 5  # number of skills for planning (RL)
+n_skill: 5  # number of skills for pretraining
+ob_norm: false
+pixel_ob: ${env.pixel_ob}
+
+buffer_size: 1000000
+reward_scale: 1.0
+
+target_update_freq: 2
+target_update_tau: 0.99
+
+fixed_alpha: 1
+alpha_init_temperature: 1
+max_divergence: 100
+
+# Loss
+consistency_coef: 2
+reward_coef: 0.5
+value_coef: 0.1
+rho: 0.5
+model_lr: 1e-3
+actor_lr: 1e-3
+alpha_lr: 3e-4
+grad_clip: 10.0
+
+# CEM
+cem_iter: 6
+num_elites: 64
+num_sample_traj: 512
+num_policy_traj: 25
+cem_momentum: 0.1
+cem_temperature: 0.5
+max_std: 0.5
+min_std: 0.05
+std_step: 25000
+horizon_step: 25000
+
+# Model
+state_dim: 50
+num_units: 512
+dense_act: elu
+weight_decay: 0.0
+num_layers: 2
+
+encoder:
+  image_shape: [84, 84, 9]
+  kernel_size: [7, 5, 3, 3]
+  stride: [2, 2, 2, 2]
+  conv_dim: [32, 32, 32, 32]
+  cnn_act: relu
+  embed_dim: 256
+  hidden_dims: []
+  dense_act: elu

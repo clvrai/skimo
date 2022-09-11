@@ -1,0 +1,78 @@
+defaults:
+  - common
+  - _self_
+
+name: spirl_dreamer
+phase: rl
+
+pretrain_ckpt_path: null
+skill_dim: 10
+skill_horizon: 10
+
+# Training
+max_global_step: 2000000
+warm_up_step: 5000
+train_iter: 1
+train_every: 50
+log_every: 500
+evaluate_every: 10000
+ckpt_every: 50000
+pixel_ob: ${env.pixel_ob}
+
+batch_size: 50
+batch_length: 50
+meta_batch_size: 256
+meta_batch_length: 15
+model_lr: 6e-4
+critic_lr: 8e-5
+actor_lr: 8e-5
+alpha_lr: 3e-4
+grad_clip: 100.0
+rl_discount: 0.99
+gae_lambda: 0.95
+horizon: 5  # number of skills for planning (RL)
+n_skill: 5  # number of skills for pretraining
+ob_norm: false
+max_divergence: 100
+
+buffer_size: 1000000
+reward_scale: 1.0
+
+expl: additive_gaussian
+expl_noise: 0.3
+expl_decay: 0.0
+expl_min: 0.0
+
+fixed_alpha: 1e-2 # null if alpha is learned
+alpha_init_temperature: 1e-2
+
+# Model
+deter_dim: 200
+stoch_dim: 30
+num_units: 400
+dense_act: elu
+pcont: false
+free_nats: 3.0
+kl_scale: 1.0
+pcont_scale: 10.0
+weight_decay: 0.0
+
+encoder:
+  image_shape: [32, 32, 3]
+  kernel_size: [4, 4, 4, 2]
+  stride: [2, 2, 2, 1]
+  conv_dim: [32, 64, 128, 256]
+  cnn_act: relu
+  embed_dim: 256
+  hidden_dims: [256, 256]
+  dense_act: elu
+
+decoder:
+  image_shape: [32, 32, 3]
+  kernel_size: [5, 5, 6, 3]
+  stride: [2, 2, 2, 1]
+  conv_dim: [1024, 128, 64, 32]
+  cnn_act: relu
+  hidden_dims: [256, 256]
+  dense_act: elu
+

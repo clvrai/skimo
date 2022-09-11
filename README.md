@@ -1,8 +1,8 @@
 # Skill-based Model-based Reinforcement learning (SkiMo)
 
-[[Project website](https://clvrai.com/skimo)] [[Paper](https://arxiv.org/abs/2207.07560)]
+[[Project website](https://clvrai.com/skimo)] [[Paper](https://openreview.net/forum?id=iVxy2eO601U)] [[arXiv](https://arxiv.org/abs/2207.07560)]
 
-This project is a PyTorch implementation of [Skill-based Model-based Reinforcement Learning](https://clvrai.com/skimo).
+This project is a PyTorch implementation of [Skill-based Model-based Reinforcement Learning](https://clvrai.com/skimo), published in CoRL 2022.
 
 
 ## Files and Directories
@@ -18,11 +18,11 @@ This project is a PyTorch implementation of [Skill-based Model-based Reinforceme
 * `spirl_agent.py`: model for SPiRL
 * `config/`: default hyperparameters
 * `calvin/`: CALVIN environments
-* `d4rl/`: D4RL environments
+* `d4rl/`: [D4RL](https://github.com/kpertsch/d4rl) environments forked by Karl Pertsch. The only change from us is in the [installation](d4rl/setup.py#L15) command
 * `envs/`: environment wrappers
 * `spirl/`: [SPiRL code](https://github.com/clvrai/spirl)
 * `data/`: offline data directory
-* `rolf/`: implementation of RL algorithms from [robot-learning](https://github.com/youngwoon/robot-learining) by Youngwoon Lee
+* `rolf/`: implementation of RL algorithms from [robot-learning](https://github.com/youngwoon/robot-learning) by Youngwoon Lee
 * `log/`: training log, evaluation results, checkpoints
 
 
@@ -36,7 +36,8 @@ This project is a PyTorch implementation of [Skill-based Model-based Reinforceme
 
 1. Clone this repository.
 ```bash
-git clone git@github.com:clvrai/skimo.git
+git clone --recursive git@github.com:clvrai/skimo.git
+cd skimo
 ```
 
 2. Create a virtual environment
@@ -45,13 +46,13 @@ conda create -n skimo_venv python=3.9
 conda activate skimo_venv
 ```
 
-3. Install packages
+3. Install MuJoCo 2.1
+* Download the MuJoCo version 2.1 binaries for [Linux](https://mujoco.org/download/mujoco210-linux-x86_64.tar.gz) or [OSX](https://mujoco.org/download/mujoco210-macos-x86_64.tar.gz).
+* Extract the downloaded `mujoco210` directory into `~/.mujoco/mujoco210`.
+
+4. Install packages
 ```bash
-pip install mujoco
-pip install -e rolf/
-pip install -e d4rl/
-pip install -r requirements.txt
-sh calvin/install.sh
+sh install.sh
 ```
 
 
@@ -59,12 +60,12 @@ sh calvin/install.sh
 
 ```bash
 # Navigate to the data directory
-cd data
+mkdir data && cd data
 
 # Maze
 gdown 1GWo8Vr8Xqj7CfJs7TaDsUA6ELno4grKJ
 
-# Kitchen
+# Kitchen (and mis-aligned kitchen)
 gdown 1Fym9prOt5Cu_I73F20cdd3lXZPhrvEsd
 
 # CALVIN
@@ -75,7 +76,7 @@ cd ..
 
 
 ## Usage
-Commands for SkiMo and all baselines. Results will be logged to [WandB](https://wandb.ai/site). Before running the commands below, **please change the wandb entity** in [run.py#L40-L41](run.py#L40-L41) to match your account.
+Commands for SkiMo and all baselines. Results will be logged to [WandB](https://wandb.ai/site). Before running the commands below, **please change the wandb entity** in [run.py#L36](run.py#L36) to match your account.
 
 ### Environment
 
@@ -87,6 +88,7 @@ After pre-training, please set `[PRETRAINED_CKPT]` with the proper path to the c
 ```bash
 python run.py --config-name skimo_[ENV] run_prefix=test gpu=0 wandb=true
 ```
+You can also skip this step by downloading our pre-trained model checkpoints. See instructions in [pretrained_models.md](pretrained_models.md).
 
 * Downstream RL
 ```bash
@@ -148,7 +150,7 @@ Solution: install `mpi4py` with conda instead, which requires a lower version of
 conda install python==3.8
 conda install mpi4py
 ```
-Now you can re-run `pip install`, etc.
+Now you can re-run `sh install.sh`.
 
 ### MacOS mujoco-py compilation error
 See [this](https://github.com/openai/mujoco-py#youre-on-macos-and-you-see-clang-error-unsupported-option--fopenmp). In my case, I needed to change `/usr/local/` to `/opt/homebrew/` in all paths.
@@ -158,10 +160,10 @@ See [this](https://github.com/openai/mujoco-py#youre-on-macos-and-you-see-clang-
 
 If you find our code useful for your research, please cite:
 ```
-@article{shi2022skimo,
+@inproceedings{shi2022skimo,
   title={Skill-based Model-based Reinforcement Learning},
   author={Lucy Xiaoyang Shi and Joseph J. Lim and Youngwoon Lee},
-  journal={arXiv preprint arXiv:2207.07560},
+  booktitle={Conference on Robot Learning},
   year={2022}
 }
 ```

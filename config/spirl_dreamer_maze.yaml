@@ -1,0 +1,51 @@
+defaults:
+  - algo@rolf: spirl_dreamer
+  - env: maze
+  - _self_
+  - override hydra/hydra_logging: none
+  - override hydra/job_logging: stdout
+
+rolf:
+  env: maze
+  n_skill: 5
+  hl_horizon: 15
+  deter_dim: 200
+  stoch_dim: 30
+  num_units: 400
+  pretrain:
+    data_path: data/maze.gz
+    batch_size: 512
+  scalars:
+    hl_model: 0.5
+    hl_actor: 1
+    encoder_kl: 0.001
+  target_divergence: 10
+
+# Training
+deterministic: false
+seed: 0
+is_train: true
+init_ckpt_path: null
+init_ckpt_pretrained: false
+gpu: null
+
+# Evaluation
+ckpt_num: null
+num_eval: 1
+record_video: true
+record_video_caption: true
+record_demo: false
+
+# Log
+run_prefix: null
+notes: null
+log_root_dir: log
+wandb: false
+wandb_entity: null
+wandb_project: null
+
+# Hydra
+hydra:
+  output_subdir: null
+  run:
+    dir: .
