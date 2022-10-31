@@ -27,6 +27,7 @@ pretrain:
 joint_training: true
 freeze_model: false
 sac: false
+single_step: false
 sample_last_more: true
 
 use_prior: false

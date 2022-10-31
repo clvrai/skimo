@@ -530,7 +530,7 @@ class SkiMoAgent(BaseAgent):
         done = flip(done)
 
         with torch.autocast(cfg.device, enabled=self._use_amp):
-            # Trians skill dynamics model.
+            # Trains skill dynamics model.
             z = z_next_pred = hl_feat[0]
             rewards = []
 
@@ -543,7 +543,14 @@ class SkiMoAgent(BaseAgent):
             alpha = self.log_alpha.exp().detach()
             for t in range(cfg.n_skill):
                 z = z_next_pred
-                z_next_pred, reward_pred = hl_agent.model.imagine_step(z, ac[t])
+                if not cfg.single_step:
+                    z_next_pred, reward_pred = hl_agent.model.imagine_step(z, ac[t]) 
+                else:
+                    # using the single step model for step-by-step prediction
+                    reward_pred = 0
+                    for _ in range(cfg.skill_horizon):
+                        z_next_pred, r = hl_agent.model.imagine_step(z_next_pred, ac[t])
+                        reward_pred += r
                 if cfg.sac:
                     z = ob[t]["ob"]
                 q_pred = hl_agent.model.critic(z, ac[t])
@@ -785,7 +792,7 @@ class SkiMoAgent(BaseAgent):
                     return x.transpose(0, 1)
 
             # Trains skill dynamics model and skill prior.
-            hl_o = dict(ob=o["ob"][:, ::H])
+            hl_o = dict(ob=o["ob"][:, ::H]) if not cfg.single_step else dict(ob=o["ob"])
             hl_feat = flip(hl_agent.model.encoder(hl_o))
             with torch.no_grad():
                 hl_feat_target = flip(hl_agent.model_target.encoder(hl_o))
@@ -802,10 +809,14 @@ class SkiMoAgent(BaseAgent):
             h = h_next_pred = hl_feat[0]
             consistency_loss = 0
             hs = [h]
-            hl_o = flip(hl_o, L + 1)
-            for t in range(L):
+            planning_horizon = L if not cfg.single_step else L * H
+            for t in range(planning_horizon):
                 h = h_next_pred
-                a = hl_ac[t] if cfg.joint_training else hl_ac[t].detach()
+                if not cfg.single_step:
+                    a = hl_ac[t] if cfg.joint_training else hl_ac[t].detach()
+                else:
+                    # use the same skill for steps within the same skill horizon
+                    a = hl_ac[t // H] 
                 h_next_pred, _ = hl_agent.model.imagine_step(h, a)
                 h_next_target = hl_feat_target[t + 1]
                 rho = scalars.rho ** t
@@ -816,9 +827,11 @@ class SkiMoAgent(BaseAgent):
                 scalars.hl_model * hl_recon_loss
                 + scalars.consistency * consistency_loss.clamp(max=1e4).mean()
             )
-            hl_model_loss.register_hook(lambda grad: grad * (1 / L))
+            hl_model_loss.register_hook(lambda grad: grad * (1 / planning_horizon))
 
         # HL skill prior loss.
+        if cfg.single_step:
+            hl_feat = hl_feat[::H]
         if not cfg.joint_training:
             meta_ac_dist = hl_agent.actor(hl_feat[:-1].detach())
         else:
